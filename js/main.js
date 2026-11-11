@@ -18,9 +18,21 @@ const sparsam = /Quest|OculusBrowser|Android|iPhone|iPad/i.test(navigator.userAg
 
 const lw = document.getElementById('bild');
 // Fassung 2: WebGPU. Fällt automatisch auf WebGL zurück, wenn der Browser kein WebGPU kann.
+/* Brille oder Bildschirm?
+   WebXR läuft über WebGPU nur, wenn der Browser XRGPUBinding kennt. Der
+   Quest-Browser kann das (Stand November 2026) noch nicht – dort bliebe das
+   Bild schwarz. Darum: Sobald eine VR-Brille da ist und XRGPUBinding fehlt,
+   nehmen wir denselben Code mit WebGL-Unterbau. Die TSL-Materialien laufen
+   dort genauso, nur der Unterbau ist ein anderer. */
+const suchparam = new URLSearchParams(location.search);
+let nurWebGL = suchparam.has('webgl');
+if (!nurWebGL && !suchparam.has('webgpu') && navigator.xr
+    && typeof globalThis.XRGPUBinding === 'undefined') {
+  try { nurWebGL = await navigator.xr.isSessionSupported('immersive-vr'); } catch (e) { /* egal */ }
+}
 const renderer = new THREE.WebGPURenderer({
   canvas: lw, antialias: true, powerPreference: 'high-performance',
-  forceWebGL: new URLSearchParams(location.search).has('webgl')
+  forceWebGL: nurWebGL
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, sparsam ? 1.2 : 1.8));
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -182,8 +194,9 @@ bereit.then(() => {
   renderer.setAnimationLoop(bild);
   const art = (renderer.backend && renderer.backend.isWebGPUBackend) ? 'WebGPU' : 'WebGL';
   console.log('Bergwelt V2 läuft mit ' + art);
-  const hinweis = document.getElementById('grafikart');
-  if (hinweis) hinweis.textContent = art;
+  const zeile = document.querySelector('.fassung');
+  if (zeile) zeile.textContent = 'Fassung 2 · ' + art
+    + (nurWebGL && navigator.xr ? ' (VR braucht noch WebGL)' : '');
 }).catch(e => {
   const k = document.getElementById('losknopf');
   if (k) k.textContent = 'Grafik startet nicht: ' + e.message;
@@ -204,7 +217,7 @@ document.getElementById('ladetext').remove();
 /* ---------- Nachbearbeitung: Lichtschein ----------
    Nur am Bildschirm; in der Brille wird direkt gerendert. ?einfach schaltet aus. */
 let nachbearbeitung = null;
-const einfach = new URLSearchParams(location.search).has('einfach');
+const einfach = suchparam.has('einfach') || nurWebGL;
 if (!einfach) {
   try {
     nachbearbeitung = new THREE.PostProcessing(renderer);

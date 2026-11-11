@@ -20,6 +20,18 @@ Fassung 1 (WebGL) bleibt unverändert: https://erikdahlmann.github.io/vr-bergwel
   Geröll und Blumen. Schattenkarte 4096 statt 2048.
 * **Kantenglättung an** (MSAA) und höhere Bildpunktdichte.
 
+### VR läuft hier über WebGL
+
+WebXR und WebGPU vertragen sich noch nicht überall: Der Browser muss
+`XRGPUBinding` können, und der Quest-Browser kann das (Stand November 2026)
+nicht – das Bild bliebe schwarz. Die Seite prüft das beim Start selbst:
+Meldet der Browser eine VR-Brille und fehlt `XRGPUBinding`, läuft derselbe
+Code mit WebGL-Unterbau. Die TSL-Materialien, der Wind und der triplanare
+Fels funktionieren dort genauso; nur Lichtschein und WebGPU-Unterbau fallen
+weg. Am Bildschirm ohne Brille bleibt es bei WebGPU.
+
+Erzwingen: `?webgl` oder `?webgpu`.
+
 Gemessen am Mac: rund 55 Bilder/s bei 430 000 Dreiecken.
 
 ### Was nicht ging

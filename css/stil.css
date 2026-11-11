@@ -39,7 +39,11 @@ html, body {
 @media (max-width: 560px), (max-height: 560px) {
   .kasten { padding: 18px 20px 16px; }
   .kasten h1 { font-size: 24px; }
-  .auftrag { font-size: 16px; margin-bottom: 10px; }
+  .fassung {
+  margin: -6px 0 12px; font-size: 13px; letter-spacing: .04em;
+  text-transform: uppercase; color: #8a8375; font-weight: 600;
+}
+.auftrag { font-size: 16px; margin-bottom: 10px; }
   .regeln { font-size: 14px; margin-bottom: 14px; }
   button.gross { font-size: 16px; padding: 12px 14px; }
   #regal { grid-template-columns: repeat(4, 46px); gap: 5px; padding: 6px; }
@@ -49,6 +53,10 @@ html, body {
 }
 .kasten h1 {
   margin: 0 0 10px; font-family: Georgia, serif; font-size: 34px; color: var(--berg);
+}
+.fassung {
+  margin: -6px 0 12px; font-size: 13px; letter-spacing: .04em;
+  text-transform: uppercase; color: #8a8375; font-weight: 600;
 }
 .auftrag { font-size: 19px; line-height: 1.5; margin: 0 0 16px; }
 .regeln { margin: 0 0 22px; padding-left: 22px; line-height: 1.55; font-size: 16px; }
