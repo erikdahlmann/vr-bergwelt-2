@@ -1,7 +1,7 @@
 # Bergwelt V2 – Tiere finden in VR (WebGPU)
 
-Live: https://erikdahlmann.github.io/vr-bergwelt-2/
-Fassung 1 (WebGL) bleibt unverändert: https://erikdahlmann.github.io/vr-bergwelt/
+Live: https://dm-pkg.de/vr-bergwelt-2/
+Fassung 1 (WebGL) bleibt unverändert: https://dm-pkg.de/vr-bergwelt/
 
 ## Was an Fassung 2 anders ist
 
